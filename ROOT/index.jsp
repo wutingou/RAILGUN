@@ -1,5 +1,33 @@
-﻿<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+﻿<%@ page contentType="text/html;charset=utf-8"%>
+<%@ page import="java.sql.*"%> 
+<%
+Connection conn = null;
+Statement stmt = null;
+ResultSet rs = null;
+Statement stmt2 = null;
+ResultSet rs2 = null;
+
+boolean first = true;
+
+try {
+    Class.forName("com.mysql.jdbc.Driver");
+    conn = DriverManager.getConnection("jdbc:mysql://localhost/railgun?user=root&password=U$wfZw6C&serverTimezone=UTC");
+    stmt = conn.createStatement();
+    rs = stmt.executeQuery("SELECT id FROM reviewed");
+    rs.last();
+    stmt2 = conn.createStatement();
+    rs2 = stmt2.executeQuery("SELECT id FROM request");
+    rs2.last();
+    // Do something with the Connection
+
+} catch (SQLException ex) {%>
+    SQLException:   <%=ex.getMessage()%>
+    SQLState:   <%=ex.getSQLState()%>
+    VendorError:   <%=ex.getErrorCode()%>
+<%
+return;
+}
+%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -72,7 +100,7 @@
           </li>
 
           <li class="nav-item">
-            <a class="nav-link" href="review">
+            <a class="nav-link" href="render">
               <span class="menu-title">弹幕渲染</span>
               <i class="mdi mdi-contacts menu-icon"></i>
             </a>
@@ -118,11 +146,11 @@
               <div class="card bg-gradient-danger card-img-holder text-white">
                 <div class="card-body">
                   <img src="images/dashboard/circle.svg" class="card-img-absolute" alt="circle-image"/>
-                  <h4 class="font-weight-normal mb-3">队列中弹幕数量
+                  <h4 class="font-weight-normal mb-3">审核队列长度
                     <i class="mdi mdi-chart-line mdi-24px float-right"></i>
                   </h4>
-                  <h2 class="mb-5">100 条</h2>
-				  <h6 class="card-text">等待审核</h6>
+                  <h2 class="mb-5"><%=rs2.getRow()%> 条</h2>
+				  <h6 class="card-text"></h6>
                 </div>
               </div>
             </div>
@@ -130,68 +158,15 @@
               <div class="card bg-gradient-success card-img-holder text-white">
                 <div class="card-body">
                   <img src="images/dashboard/circle.svg" class="card-img-absolute" alt="circle-image"/>                                    
-                  <h4 class="font-weight-normal mb-3">实时弹幕数量
+                  <h4 class="font-weight-normal mb-3">通过弹幕数量
                     <i class="mdi mdi-diamond mdi-24px float-right"></i>
                   </h4>
-                  <h2 class="mb-5">10 条</h2>
-                  <h6 class="card-text">上限：20条</h6>
+                  <h2 class="mb-5"><%=rs.getRow()%> 条</h2>
+                  <h6 class="card-text"></h6>
                 </div>
               </div>
             </div>
           </div>
-		  
-          <div class="row">
-            <div class="col-lg-12 grid-margin stretch-card">
-              <div class="card">
-                <div class="card-body">
-                  <h4 class="card-title">等待中的弹幕</h4>
-                  <p class="card-description">
-                    审核机位数量：<b>5</b>
-                  </p>
-                  <table style="text-align: center;" class="table table-bordered">
-                    <thead>
-                      <tr>
-                        <th width=8%>
-                          #
-                        </th>
-                        <th width=18%>
-                          弹幕发送者
-                        </th>
-						
-                        <th>
-                          内容
-                        </th>
-                        <th width=10%>
-                          等待时间
-                        </th>
-						<th width=10%>
-						  审核机位
-						</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>
-                          1
-                        </td>
-                        <td>
-                          HundunStar
-                        </td>
-                        <td>
-                          鹿鹿姐我喜欢你！！！
-                        </td>
-                        <td>
-						  10 <b>s</b>
-                        </td>
-						<td>
-						  1
-						</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-			</div>
         </div>
         <!-- content-wrapper ends -->
         <!-- partial:partials/_footer.html -->
