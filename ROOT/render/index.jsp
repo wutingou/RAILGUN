@@ -9,11 +9,11 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="screen_container"></div>
+    <div class="screen_container" id="danmu"></div>
     <div class="screen_toolbar">
         <input id="screenBulletText" type="text" placeholder="请输入弹幕内容"/>
         <button class="send">发射</button>
-        <button class="clear">关闭弹幕</button>
+        <button class="full">全屏幕</button>
     </div>
 </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>

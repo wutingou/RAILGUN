@@ -10,14 +10,11 @@ $(".send").on("click", function () {
     addInterval(jqueryDom);
 });
 // 监听关闭弹幕按钮
-$(".clear").on("click", function () {
-    if (isShow) {
-        $(".bullet").css("opacity", 0);
-        isShow = false;
-    } else {
-        $(".bullet").css("opacity", 1);
-        isShow = true;
-    }   
+$(".full").on("click", function () {
+    var elem = document.getElementById("danmu"); 
+	//show full screen 
+	elem.webkitRequestFullScreen(); 
+   
 });
 // 新建一个弹幕
 function createScreenbullet(text) {

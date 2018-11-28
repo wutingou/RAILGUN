@@ -9,17 +9,18 @@ boolean first = true;
 
 try {
     Class.forName("com.mysql.jdbc.Driver");
-    conn = DriverManager.getConnection("jdbc:mysql://localhost/railgun?user=root&password=&serverTimezone=UTC");
+    conn = DriverManager.getConnection("jdbc:mysql://localhost/railgun?user=root&password=U$wfZw6C&serverTimezone=UTC");
     stmt = conn.createStatement();
-    rs = stmt.executeQuery("SELECT text FROM reviewed WHERE time='" + request.getParameter("time") +"'");
+    rs = stmt.executeQuery("SELECT text , id FROM reviewed WHERE id > " + request.getParameter("id"));
 
     // Do something with the Connection
 
-} catch (SQLException ex) {
-    // handle any errors
-    System.out.println("SQLException: " + ex.getMessage());
-    System.out.println("SQLState: " + ex.getSQLState());
-    System.out.println("VendorError: " + ex.getErrorCode());
+} catch (SQLException ex) {%>
+    SQLException:   <%=ex.getMessage()%>
+    SQLState:   <%=ex.getSQLState()%>
+    VendorError:   <%=ex.getErrorCode()%>
+<%
+return;
 }
 %>
 [
@@ -33,7 +34,7 @@ if (first){
 }
 
 %>
- '<%=rs.getString("text")%>'
+ {"text":"<%=rs.getString("text")%>","id":<%=rs.getString("id")%>}
 <% 
 
 }
