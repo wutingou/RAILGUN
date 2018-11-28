@@ -64,9 +64,16 @@
             </a>
           </li>
 		  
-		  <li class="nav-item">
+          <li class="nav-item">
             <a class="nav-link" href="pages/review">
               <span class="menu-title">弹幕审核</span>
+              <i class="mdi mdi-contacts menu-icon"></i>
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="review">
+              <span class="menu-title">弹幕渲染</span>
               <i class="mdi mdi-contacts menu-icon"></i>
             </a>
           </li>

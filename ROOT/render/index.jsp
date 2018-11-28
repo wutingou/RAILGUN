@@ -13,6 +13,7 @@
     <div class="screen_toolbar">
         <input id="screenBulletText" type="text" placeholder="请输入弹幕内容"/>
         <button class="send">发射</button>
+        <button class="ajaxstart">开始后台监听</button>
         <button class="full">全屏幕</button>
     </div>
 </body>

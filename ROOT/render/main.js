@@ -2,6 +2,24 @@
 var timers = [];
 // 控制弹幕显隐变量
 var isShow = true;
+// 目前的弹幕
+var id = 0;
+// 开始监听
+$(".ajaxstart").on("click", function () {
+    var timer = setInterval(function () {
+        $.ajax({url: "ajax.jsp?id=" + String(id), success: function(result){
+            var Json_Object = JSON.parse(result);
+            for (i=0;i<Json_Object.length;i++){
+                console.log(Json_Object[i].text);
+                var jqueryDom = createScreenbullet(Json_Object[i].text);
+                addInterval(jqueryDom);
+                if (Json_Object[i].id > id){
+                    id = Json_Object[i].id;
+                }
+            }
+        }});
+    }, 1000);
+});
 // 监听发送按钮
 $(".send").on("click", function () {
     // 创建弹幕
