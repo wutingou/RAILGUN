@@ -177,7 +177,7 @@ return;
 					    </td>
                         <td width=16%>
                           <button type="button" class="btn btn-gradient-success btn-sm" id="accept" info='<%=Json%>'>通过</button>
-					      <button type="button" class="btn btn-gradient-danger btn-sm">拒绝</button>
+					      <button type="button" class="btn btn-gradient-danger btn-sm" id="reject" info='<%=Json%>'>拒绝</button>
                         </td>
                       </tr>
 					  <%
