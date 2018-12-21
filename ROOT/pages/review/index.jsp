@@ -1,25 +1,32 @@
 ﻿<%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="redis.clients.jedis.Jedis" %>
-<%@ page import="java.util.List" %>
-<%@ page import="java.util.ArrayList" %>
+<%@ page import="java.sql.Connection" %>
+<%@ page import="java.sql.DriverManager" %>
+<%@ page import="java.sql.ResultSet" %>
+<%@ page import="java.sql.SQLException" %>
+<%@ page import="java.sql.Statement" %>
 
-<%!
-	String IP="localhost";
-	int Port=6379;
-	Jedis jedis = new Jedis(IP,Port);
-	List<Pair<String, String>> sender=new ArrayList<Pair<String, String>>();
-%>
+<%
+Connection conn = null;
+Statement stmt = null;
+ResultSet rs = null;
+String sql = "";
 
-<%!
-	public void jspInit(){
-		if(!jedis.exists("bnum"))jedis.set("bnum","0");
-		if(jedis.exists("barrage")){
-			for(int i=0;i<jedis.hlen("barrage")/2;i++){
-				
-			}
-		}
-	}
+boolean first = true;
+try{
+	Class.forName("com.mysql.jdbc.Driver");
+    conn = DriverManager.getConnection("jdbc:mysql://localhost/railgun?user=root&password=U$wfZw6C&serverTimezone=UTC");
+    stmt = conn.createStatement();
+	sql = "SELECT id , openid , text , time , reviewer FROM request";
+	rs = stmt.executeQuery(sql);
+	
+} catch (SQLException ex) {%>
+    SQLException:   <%=ex.getMessage()%>
+    SQLState:   <%=ex.getSQLState()%>
+    VendorError:   <%=ex.getErrorCode()%>
+<%
+return;
+}
 %>
 
 <!DOCTYPE html>
@@ -153,27 +160,37 @@
                     </thead>
                     <tbody>
 					  <%
-						
+					    try{
+							while(rs.next()){
+								String Json="[{\"id\":\""+rs.getInt("id")+"\",\"openid\":\""+rs.getString("openid")
+									+"\",\"text\":\""+rs.getString("text")+"\",\"reviewer\":\""+rs.getString("reviewer")+"\"}]";
 					  %>
-                      <tr>
-                        <td width=8%>
-                          1
-                        </td>
-                        <td width=18%>
-                          HundunStar
-                        </td>
-                        <td>
-						<%
-						 jedis.set("runoobkey", "鹿鹿姐我喜欢你！！！！！");
-						 out.println(jedis.get("runoobkey"));
-						%>
-                          
-                        </td>
+					  <tr id="<%=rs.getInt("id")%>">
+					    <td width=8%>
+							<%=rs.getInt("id")%>
+						</td>
+						<td width=18%>
+							<%=rs.getString("openid")%>
+						</td>
+						<td>
+						    <%=rs.getString("text")%>
+					    </td>
                         <td width=16%>
-                          <button type="button" class="btn btn-gradient-success btn-sm">通过</button>
+                          <button type="button" class="btn btn-gradient-success btn-sm" id="accept" info='<%=Json%>'>通过</button>
 					      <button type="button" class="btn btn-gradient-danger btn-sm">拒绝</button>
                         </td>
                       </tr>
+					  <%
+							}
+						}catch (SQLException ex) {
+					  %>
+						SQLException:   <%=ex.getMessage()%>
+						SQLState:   <%=ex.getSQLState()%>
+						VendorError:   <%=ex.getErrorCode()%>
+					  <%
+							return;
+						}
+					  %>
                     </tbody>
                   </table>
                 </div>
